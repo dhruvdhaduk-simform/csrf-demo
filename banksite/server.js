@@ -10,4 +10,8 @@ app.get('/', (req, res) => {
     res.send(page);
 });
 
+app.post('/transfer', (req, res) => {
+    res.send('Transfer API is working.');
+});
+
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
