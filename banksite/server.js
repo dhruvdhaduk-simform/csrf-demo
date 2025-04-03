@@ -7,6 +7,7 @@ const PORT = 8000;
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded());
 
 app.get('/', (req, res) => {
     const page = fs.readFileSync('frontend.html', 'utf-8');
@@ -14,10 +15,14 @@ app.get('/', (req, res) => {
 });
 
 app.post('/transfer', (req, res) => {
-    const senderName = req.body.senderName;
-    const receiverName = req.body.receiverName;
+    console.log(req.body);
+    const senderName = req.body['sender-name'];
+    const receiverName = req.body['receiver-name'];
     const amount = req.body.amount;
-    res.send(`$${amount} was transferred from ${senderName} to ${receiverName}`);
+
+    const msg = `$${amount} was transferred from ${senderName} to ${receiverName}`;
+    console.log(msg);
+    res.send(msg);
 });
 
 app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
