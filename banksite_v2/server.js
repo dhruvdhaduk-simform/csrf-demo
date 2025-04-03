@@ -1,17 +1,26 @@
 const exp = require('constants');
+const mustache = require('mustache');
 const express = require('express');
 const fs = require('fs');
+const crypto = require('crypto');
 
 const PORT = 8000;
 
 const app = express();
 
+function generateCsrfToken() {
+    const token =crypto.randomBytes(20).toString('hex');
+    return token;
+}
+
 app.use(express.json());
 app.use(express.urlencoded());
 
 app.get('/', (req, res) => {
-    const page = fs.readFileSync('frontend.html', 'utf-8');
-    res.send(page);
+    const csrfToken = generateCsrfToken();
+    const htmlTemplate = fs.readFileSync('frontend.html', 'utf-8');
+    const renderedHTML = mustache.render(htmlTemplate, { csrfToken });
+    res.send(renderedHTML);
 });
 
 app.post('/transfer', (req, res) => {

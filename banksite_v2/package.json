@@ -1,4 +1,3 @@
-
 {
   "name": "banksite",
   "version": "2.0.0",
@@ -10,6 +9,7 @@
   "author": "Dhruv Dhaduk",
   "license": "ISC",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mustache": "^4.2.0"
   }
 }
