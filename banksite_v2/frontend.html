@@ -97,7 +97,7 @@
         <h1>Safest bank in the world</h1>
         <h4>Make a super safe transactions</h4>
 
-        <form action="/transfer" method="post">
+        <form>
             <div class="form-item">
                 <label for="sender-name">Your Name</label>
                 <input
@@ -130,5 +130,35 @@
             </div>
             <button class="submit-btn">Send Money</button>
         </form>
+
+        <script>
+            const csrfToken = "{{csrfToken}}";
+
+            const form = document.querySelector('form');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const sender = form['sender-name'].value;
+                const receiver = form['receiver-name'].value;
+                const amount = form['amount'].value;
+                
+                const res = await fetch('/transfer', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        'sender-name': sender,
+                        'receiver-name': receiver,
+                        amount
+                    })
+                });
+
+                const msg = await res.text();
+
+                alert(msg);
+            });
+        </script>
     </body>
 </html>

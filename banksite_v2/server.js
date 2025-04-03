@@ -1,5 +1,6 @@
 const exp = require('constants');
 const mustache = require('mustache');
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const fs = require('fs');
 const crypto = require('crypto');
@@ -15,6 +16,7 @@ function generateCsrfToken() {
 
 app.use(express.json());
 app.use(express.urlencoded());
+app.use(cookieParser());
 
 app.get('/', (req, res) => {
     const csrfToken = generateCsrfToken();
@@ -28,8 +30,9 @@ app.post('/transfer', (req, res) => {
     const senderName = req.body['sender-name'];
     const receiverName = req.body['receiver-name'];
     const amount = req.body.amount;
+    const csrfToken = req.headers['x-csrf-token'];
 
-    const msg = `$${amount} was transferred from ${senderName} to ${receiverName}`;
+    const msg = `$${amount} was transferred from ${senderName} to ${receiverName}. TOKEN : ${csrfToken}`;
     console.log(msg);
     res.send(msg);
 });
