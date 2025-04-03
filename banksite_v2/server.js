@@ -9,8 +9,17 @@ const PORT = 8000;
 
 const app = express();
 
+const csrfTokens = new Map();
+const TOKEN_EXPIRY = 30 * 1000;
+
 function generateCsrfToken() {
-    const token =crypto.randomBytes(20).toString('hex');
+    const token = crypto.randomBytes(20).toString('hex');
+    csrfTokens.set(token, Date.now());
+
+    setTimeout(() => {
+        csrfTokens.delete(token);
+    }, TOKEN_EXPIRY);
+
     return token;
 }
 
@@ -26,13 +35,22 @@ app.get('/', (req, res) => {
 });
 
 app.post('/transfer', (req, res) => {
-    console.log(req.body);
     const senderName = req.body['sender-name'];
     const receiverName = req.body['receiver-name'];
     const amount = req.body.amount;
     const csrfToken = req.headers['x-csrf-token'];
 
-    const msg = `$${amount} was transferred from ${senderName} to ${receiverName}. TOKEN : ${csrfToken}`;
+    if (!csrfToken) {
+        return res.send('Unauthorized Request. No CSRF token found.');
+    }
+
+    if (!csrfTokens.has(csrfToken)) {
+        return res.send('Invalid or expired CSRF token.');
+    }
+
+    csrfTokens.delete(csrfToken);
+
+    const msg = `$${amount} was transferred from ${senderName} to ${receiverName}.`;
     console.log(msg);
     res.send(msg);
 });
