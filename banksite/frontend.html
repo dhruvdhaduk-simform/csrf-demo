@@ -111,7 +111,7 @@
             <div class="form-item">
                 <label for="receiver-name">Receiver Name</label>
                 <input
-                    id="receiverj-name"
+                    id="receiver-name"
                     name="receiver-name"
                     type="text"
                     placeholder="Enter Receiver name"
@@ -130,5 +130,27 @@
             </div>
             <button class="submit-btn">Send Money</button>
         </form>
+
+        <script>
+            const form = document.querySelector('form');
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const senderName = form['sender-name'].value;
+                const receiverName = form['receiver-name'].value;
+                const amount = form['amount'].value;
+
+                const response = await fetch('/transfer', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ senderName, receiverName, amount })
+                });
+
+                const txt = await response.text();
+
+                alert(txt);
+            });
+        </script>
     </body>
 </html>
