@@ -1,0 +1,15 @@
+
+{
+  "name": "banksite",
+  "version": "2.0.0",
+  "description": "This is a website of a bank which handles the transactions.",
+  "main": "index.js",
+  "scripts": {
+    "server": "node server.js"
+  },
+  "author": "Dhruv Dhaduk",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
